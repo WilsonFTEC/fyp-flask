@@ -1,20 +1,19 @@
 from flask import Flask, render_template, request
-from decision import Fruit
+from decision import Prediction
 
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    weight = texture = result = 0
+    result = 0
     if request.method == 'POST':
-        weight = request.form['weight']
-        texture = request.form['texture']
-        fruit = Fruit(weight, result)
-        fruit.train()
-        result = fruit.test()
-        return render_template("index.html", title="Hello AI", value=result)
+        data = [[1,1,1,1,1,1,1,1,1,1]]
+        prediction = Prediction(data)
+        result = prediction.test()
+        return render_template("index.html", title="AI Page | Dashboard", value=result)
     else:
-        return render_template("index.html", title="Hello AI")
+        return render_template("index.html", title="AI Page | Dashboard")
+
 
 @app.route("/newapplication")
 def newapplication():
@@ -37,4 +36,4 @@ def virtualassit():
     return render_template("VirtualAssistant.html")
 
 if __name__ == '__main__':
-    app.run() # disable debug=True in production
+    app.run(debug=True) # disable debug=True in production
