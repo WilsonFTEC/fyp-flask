@@ -6,9 +6,9 @@
     <div class="box">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-            <div class="notification is-danger">
-                {{ messages[0] }}
-            </div>
+        <div class="notification is-danger">
+            {{ messages[0] }}
+        </div>
         {% endif %}
         {% endwith %}
         <form method="POST" action="/login">
@@ -32,7 +32,7 @@
             <button class="button is-block is-info is-large is-fullwidth">Login</button>
         </form>
         <br>
-            <a class="button is-block is-info is-large is-fullwidth" href="/signup">Signup</a>
+        <a class="button is-block is-info is-large is-fullwidth" href="/signup">Signup</a>
     </div>
 </div>
 {% endblock %}

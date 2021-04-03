@@ -2,11 +2,13 @@ from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
 from . import db
 from fyp.decision import Prediction
+from .models import User
 
 main = Blueprint("main", __name__)
 
 
 @main.route("/", methods=["GET", "POST"])
+@login_required
 def index():
     result = 0
     if request.method == "POST":
@@ -21,30 +23,41 @@ def index():
 @main.route("/profile")
 @login_required
 def profile():
-    return render_template("profile.html", name=current_user.name, email=current_user.email)
+    return render_template(
+        "profile.html", name=current_user.name, email=current_user.email
+    )
     # return render_template('NewApplication.html')
 
 
 @main.route("/newapplication")
+@login_required
 def newapplication():
-    return render_template("NewApplication.html")
+    user_id = "C0000" + str(current_user.id)
+    return render_template("NewApplication.html", applicationNumber=user_id)
 
 
 @main.route("/report")
+@login_required
 def report():
-    return render_template("Report.html")
+    user_id = "C0000" + str(current_user.id)
+    return render_template(
+        "Report.html", name=current_user.name, applicationNumber=user_id
+    )
 
 
 @main.route("/trackprogress")
+@login_required
 def trackprogress():
     return render_template("TrackProgress.html")
 
 
 @main.route("/user")
+@login_required
 def user():
     return render_template("UserPortfolio.html")
 
 
 @main.route("/virtualassit")
+@login_required
 def virtualassit():
     return render_template("VirtualAssistant.html")

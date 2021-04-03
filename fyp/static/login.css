@@ -688,13 +688,13 @@ a.has-text-info:focus, a.has-text-info:hover {
     background-color: #209cee!important;
 }
 .has-text-success {
-    color: #23d160!important;
+    color: #1ba049!important;
 }
 a.has-text-success:focus, a.has-text-success:hover {
-    color: #1ca64c!important;
+    color: #1c8d44!important;
 }
 .has-background-success {
-    background-color: #23d160!important;
+    background-color: #188d41!important;
 }
 .has-text-warning {
     color: #ffdd57!important;
@@ -1696,12 +1696,12 @@ a.box:active {
     color: #fff;
 }
 .button.is-success {
-    background-color: #23d160;
+    background-color: #1aa54b;
     border-color: transparent;
     color: #fff;
 }
 .button.is-success.is-hovered, .button.is-success:hover {
-    background-color: #22c65b;
+    background-color: #15883d;
     border-color: transparent;
     color: #fff;
 }
@@ -1713,7 +1713,7 @@ a.box:active {
     box-shadow: 0 0 0 .125em rgba(35, 209, 96, .25);
 }
 .button.is-success.is-active, .button.is-success:active {
-    background-color: #20bc56;
+    background-color: #168d40;
     border-color: transparent;
     color: #fff;
 }
@@ -2533,13 +2533,13 @@ a.box:active {
     box-shadow: 0 0 0 .125em rgba(32, 156, 238, .25);
 }
 .select.is-success:not(:hover)::after {
-    border-color: #23d160;
+    border-color: #159c45;
 }
 .select.is-success select {
-    border-color: #23d160;
+    border-color: #16a046;
 }
 .select.is-success select.is-hovered, .select.is-success select:hover {
-    border-color: #20bc56;
+    border-color: #127c37;
 }
 .select.is-success select.is-active, .select.is-success select.is-focused, .select.is-success select:active, .select.is-success select:focus {
     box-shadow: 0 0 0 .125em rgba(35, 209, 96, .25);
@@ -3552,8 +3552,8 @@ a.box:active {
     color: #fff;
 }
 .table td.is-success, .table th.is-success {
-    background-color: #23d160;
-    border-color: #23d160;
+    background-color: #1da54d;
+    border-color: #138f3e;
     color: #fff;
 }
 .table td.is-warning, .table th.is-warning {
@@ -4136,7 +4136,7 @@ a.dropdown-item.is-active, button.dropdown-item.is-active {
     margin-bottom: 0;
 }
 @media screen and (max-width:768px) {
-    .level-item: not(:last-child) {
+    .level-item:not(:last-child) {
     margin-bottom: .75rem;
 }
 }.level-left, .level-right {
@@ -4148,7 +4148,7 @@ a.dropdown-item.is-active, button.dropdown-item.is-active {
     flex-grow: 1;
 }
 @media screen and (min-width:769px), print {
-    .level-left .level-item: not(:last-child), .level-right .level-item:not(:last-child) {
+    .level-left .level-item:not(:last-child), .level-right .level-item:not(:last-child) {
     margin-right: .75rem;
 }
 }.level-left {
@@ -6473,7 +6473,7 @@ a.panel-block:hover, label.panel-block:hover {
     align-items: center;
 }
 @media screen and (min-width:769px), print {
-    .columns: not(.is-desktop) {
+    .columns:not(.is-desktop) {
     display: flex;
 }
 }@media screen and (min-width:1088px) {
@@ -6874,7 +6874,7 @@ a.panel-block:hover, label.panel-block:hover {
     margin-bottom: 1.5rem!important;
 }
 @media screen and (min-width:769px), print {
-    .tile: not(.is-child) {
+    .tile:not(.is-child) {
     display: flex;
 }
 .tile.is-1 {
@@ -6912,8 +6912,9 @@ a.panel-block:hover, label.panel-block:hover {
     width: 91.66667%}
 .tile.is-12 {
     flex: none;
-    width: 100%}
-}.hero {
+    width: 100%
+}
+.hero {
     align-items: stretch;
     display: flex;
     flex-direction: column;
@@ -7311,7 +7312,7 @@ a.panel-block:hover, label.panel-block:hover {
     background-image: linear-gradient(141deg, #04a6d7 0, #209cee 71%, #3287f5 100%);
 }
 }.hero.is-success {
-    background-color: #23d160;
+    background-color: #1ca04a;
     color: #fff;
 }
 .hero.is-success a:not(.button):not(.dropdown-item):not(.tag), .hero.is-success strong {
@@ -7359,7 +7360,7 @@ a.panel-block:hover, label.panel-block:hover {
     color: #23d160;
 }
 .hero.is-success.is-bold {
-    background-image: linear-gradient(141deg, #12af2f 0, #23d160 71%, #2ce28a 100%);
+    background-image: linear-gradient(141deg, #1c9e34 0, #1ba14a 71%, #28a167 100%);
 }
 @media screen and (max-width:768px) {
     .hero.is-success.is-bold .navbar-menu {
@@ -7558,11 +7559,13 @@ a.panel-block:hover, label.panel-block:hover {
 @media screen and (min-width:1088px) {
     .section.is-medium {
     padding: 9rem 1.5rem;
-}
+ }
 .section.is-large {
     padding: 18rem 1.5rem;
+ }
 }
-}.footer {
+.footer {
     background-color: #fafafa;
     padding: 3rem 1.5rem 6rem;
+}
 }
