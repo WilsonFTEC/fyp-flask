@@ -12,6 +12,7 @@ main = Blueprint("main", __name__)
 def index():
     result = 0
     if request.method == "POST":
+        # hardcoding
         data = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
         prediction = Prediction(data)
         result = prediction.test()
@@ -26,7 +27,6 @@ def profile():
     return render_template(
         "profile.html", name=current_user.name, email=current_user.email
     )
-    # return render_template('NewApplication.html')
 
 
 @main.route("/newapplication")
@@ -61,4 +61,3 @@ def user():
 @login_required
 def virtualassit():
     return render_template("VirtualAssistant.html")
-
