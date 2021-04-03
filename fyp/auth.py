@@ -18,6 +18,10 @@ def login_post():
     password = request.form.get("password")
     remember = True if request.form.get("remember") else False
 
+    if email == "" or password == "":
+        flash("Please input your details.")
+        return redirect(url_for("auth.login"))
+
     user = User.query.filter_by(email=email).first()
 
     # check if the user actually exists
@@ -43,6 +47,9 @@ def signup_post():
     email = request.form.get("email")
     name = request.form.get("name")
     password = request.form.get("password")
+    if email == "" or name == "" or password == "":
+        flash("Please input your details. If you have an account, you may")
+        return redirect(url_for("auth.signup"))
 
     user = User.query.filter_by(
         email=email
@@ -51,15 +58,16 @@ def signup_post():
     if (
         user
     ):  # if a user is found, we want to redirect back to signup page so user can try again
-        flash("Email address already exists")
+        flash("Email address already exists. You may")
         return redirect(url_for("auth.signup"))
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-    new_user = User(
-        email=email,
-        name=name,
-        password=generate_password_hash(password, method="sha256"),
-    )
+    else:
+        new_user = User(
+            email=email,
+            name=name,
+            password=generate_password_hash(password, method="sha256"),
+        )
 
     # add the new user to the database
     db.session.add(new_user)
