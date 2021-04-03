@@ -10,3 +10,5 @@ class Prediction:
     def test(self):
         saved_model = tf.keras.models.load_model("fyp/saved_model/ins_model1")
         return (saved_model.predict(self.dt))[0][0]
+
+        

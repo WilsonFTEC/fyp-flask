@@ -61,3 +61,4 @@ def user():
 @login_required
 def virtualassit():
     return render_template("VirtualAssistant.html")
+
