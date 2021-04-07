@@ -22,7 +22,7 @@
         @import "bourbon";
         @import "neat";
 
-        h1 {
+        h2 {
             font-size: 28px;
             font-weight: 300;
             margin-bottom: 15px;
@@ -164,9 +164,9 @@
             <section class="sidebar">
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
-                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="header"><br></li>
                     <li>
-                        <a href="/user">
+                        <a href="/">
                             <i class="fa fa-th"></i> <span>User Portfolio</span>
                         </a>
                     </li>
@@ -190,6 +190,11 @@
                             <i class="fa fa-th"></i> <span>Virtual Assistant</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url_for('auth.logout') }}">
+                            <i class="fa fa-th"></i> <span>Logout</span>
+                        </a>
+                    </li>
                 </ul>
             </section>
             <!-- /.sidebar -->
@@ -199,25 +204,24 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Dashboard
-                    <small>Control panel</small>
+                    Progress Tracker
+                    <small></small>
                 </h1>
                 <ol class="breadcrumb">
-                    <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="active">Dashboard</li>
                 </ol>
             </section>
 
             <!-- Main content -->
             <section class="content">
-                <h1>This is a progress bar in a table cell</h1>
+                <h2>Dear {{name}} <br>Here is your progress</h2>
 
                 <table width="100%">
                     <tr>
-                        <th>Header 1</th>
-                        <th>Header 2</th>
+                        <th>   Type </th>
+                        <th>   Date </th>
                         <th>Status </th>
                     </tr>
+                    {%if status=='running' %}
                     <tr>
                         <td>test</td>
                         <td>Test</td>
@@ -225,9 +229,11 @@
                             <div class="progress">
                                 <div class="indeterminate"></div>
                             </div>
-                            <a href="#">Running</a>
+                            <a href="#">Processing</a>
                         </td>
                     </tr>
+                    {%endif%}
+                    {%if status=='passed' %}
                     <tr>
                         <td>test</td>
                         <td>Test</td>
@@ -238,6 +244,8 @@
                             <a href="#">Passed</a>
                         </td>
                     </tr>
+                    {%endif%}
+                    {%if status=='failed' %}
                     <tr>
                         <td>test</td>
                         <td>Test</td>
@@ -248,16 +256,19 @@
                             <a href="#">Failed</a>
                         </td>
                     </tr>
+                    {%endif%}
+                    {%if status=='' %}
                     <tr>
-                        <td>test</td>
-                        <td>Test</td>
+                        <td>No Application</td>
+                        <td>No Application</td>
                         <td class="background background__reviewed">
                             <div class="progress">
                                 <div class="indeterminate"></div>
                             </div>
-                            <a href="#">Reviewed</a>
+                            <a href="#">None</a>
                         </td>
                     </tr>
+                    {%endif%}
                 </table>
             </section><!-- /.content -->
         </div><!-- /.content-wrapper -->

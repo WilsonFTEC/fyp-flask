@@ -53,9 +53,9 @@
             <section class="sidebar">
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
-                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="header"><br></li>
                     <li>
-                        <a href="/user">
+                        <a href="/">
                             <i class="fa fa-th"></i> <span>User Portfolio</span>
                         </a>
                     </li>
@@ -79,6 +79,11 @@
                             <i class="fa fa-th"></i> <span>Virtual Assistant</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url_for('auth.logout') }}">
+                            <i class="fa fa-th"></i> <span>Logout</span>
+                        </a>
+                    </li>
                 </ul>
             </section>
             <!-- /.sidebar -->
@@ -89,19 +94,17 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Dashboard
-                    <small>Control panel</small>
+                    Report
+                    <small></small>
                 </h1>
                 <ol class="breadcrumb">
-                    <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="active">Dashboard</li>
                 </ol>
             </section>
 
             <!-- Main content -->
             <section class="content">
-
-                <div class="success container-fluid" style="display:none;">
+                {% if status == 'success'%}
+                <div class="success container-fluid">
                     <div class="card text-center" style="width: 18rem;">
                         <img class="card-img-top" src="static/dist/img/greentick.png" style="height:180px;"
                             alt="Card image cap">
@@ -111,16 +114,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="reject container-fluid" style="display:none;">
+                {%endif%}
+                {% if status == 'fail'%}
+                <div class="reject container-fluid">
                     <div class="card text-center" style="width: 18rem;">
                         <img class="card-img-top" src="static/dist/img/redcross.png" style="height:180px;"
                             alt="Card image cap">
                         <div class="card-body">
                             <p class="card-text">Dear <span class="userName"><strong>{{name}}</strong></span> <br /> Your
-                                application is rejected due to {{applicationNumber}} reason</p>
+                                application is rejected due to {{reason}} reason</p>
                         </div>
                     </div>
                 </div>
+                {%endif%}
+                {% if status == ''%}
+                <div class="reject container-fluid">
+                    <div class="card text-center" style="width: 18rem;">
+                        <img class="card-img-top" src="static/dist/img/question_mark.png" style="height:180px;" alt="Card image cap">
+                        <div class="card-body">
+                            <p class="card-text">Dear <span class="userName"><strong>{{name}}</strong></span> <br /> You do not have report yet.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {%endif%}
             </section><!-- /.content -->
         </div><!-- /.content-wrapper -->
     </div><!-- ./wrapper -->
@@ -133,21 +150,6 @@
     <script src="static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- adminlte app -->
     <script src="static/dist/js/app.min.js" type="text/javascript"></script>
-
-    <script>
-        $(document).ready(function () {
-            var result = 0;
-            if (result == 0) {
-                $('.success').show();
-            }
-            else {
-                $('.reject').show();
-            }
-
-        })
-    </script>
-
-
 </body>
 
 </html>

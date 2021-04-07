@@ -8,7 +8,57 @@ from .models import User
 main = Blueprint("main", __name__)
 
 
-@main.route("/", methods=["GET", "POST"])
+
+
+
+@main.route("/")
+@login_required
+def profile():
+    amount = round(current_user.result, 2)
+    return render_template(
+        "profile.html",
+        name=current_user.name,
+        email=current_user.email,
+        result=amount,
+    )
+
+
+@main.route("/newapplication")
+@login_required
+def newapplication():
+    user_id = "C0000" + str(current_user.id)
+    return render_template("NewApplication.html", applicationNumber=user_id)
+
+
+@main.route("/report")
+@login_required
+def report():
+    reason = "Invalid file"
+    status=''
+    return render_template(
+        "Report.html", name=current_user.name, reason=reason, status=status
+    )
+
+
+@main.route("/trackprogress")
+@login_required
+def trackprogress():
+    status = 'running'
+    return render_template("TrackProgress.html", name=current_user.name, status=status)
+
+
+@main.route("/modiuser")
+@login_required
+def user():
+    return render_template("UserPortfolio.html")
+
+
+@main.route("/virtualassit")
+@login_required
+def virtualassit():
+    return render_template("VirtualAssistant.html")
+
+@main.route("/predict", methods=["GET", "POST"])
 @login_required
 def index():
     result = 0
@@ -26,47 +76,7 @@ def index():
     else:
         return render_template("index.html", title="AI Page | Dashboard")
 
-
-@main.route("/user")
+@main.route("/test")
 @login_required
-def profile():
-    return render_template(
-        "profile.html",
-        name=current_user.name,
-        email=current_user.email,
-        result=current_user.result,
-    )
-
-
-@main.route("/newapplication")
-@login_required
-def newapplication():
-    user_id = "C0000" + str(current_user.id)
-    return render_template("NewApplication.html", applicationNumber=user_id)
-
-
-@main.route("/report")
-@login_required
-def report():
-    user_id = "C0000" + str(current_user.id)
-    return render_template(
-        "Report.html", name=current_user.name, applicationNumber=user_id
-    )
-
-
-@main.route("/trackprogress")
-@login_required
-def trackprogress():
-    return render_template("TrackProgress.html")
-
-
-@main.route("/modiuser")
-@login_required
-def user():
-    return render_template("UserPortfolio.html")
-
-
-@main.route("/virtualassit")
-@login_required
-def virtualassit():
-    return render_template("VirtualAssistant.html")
+def test():
+    return render_template("test.html", test=111, a="0")

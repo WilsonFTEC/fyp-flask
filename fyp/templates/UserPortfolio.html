@@ -38,9 +38,9 @@
             <section class="sidebar">
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
-                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="header"><br></li>
                     <li class="active">
-                        <a href="/user">
+                        <a href="/">
                             <i class="fa fa-th"></i> <span>User Portfolio</span>
                         </a>
                     </li>
@@ -62,6 +62,11 @@
                     <li>
                         <a href="/virtualassit">
                             <i class="fa fa-th"></i> <span>Virtual Assistant</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('auth.logout') }}">
+                            <i class="fa fa-th"></i> <span>Logout</span>
                         </a>
                     </li>
                 </ul>
