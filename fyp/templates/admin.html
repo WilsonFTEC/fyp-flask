@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Virtual Assistant | Dashboard</title>
+    <title>Admin Page | Dashboard</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -25,7 +25,7 @@
 
         <header class="main-header">
             <!-- Logo -->
-            <a href="/" class="logo"><b>FTEC</b> FYP</a>
+            <a href="/admin" class="logo"><b>FTEC</b> FYP</a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
@@ -76,30 +76,35 @@
 
             <!-- Main content -->
             <section class="content">
-                <table class="table align-middle">
+                <table method="POST" class="table align-middle">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Lorem</th>
-                            <th scope="col">Ipsum</th>
-                            <th scope="col">Dolor</th>
+                            <th scope="col">Number</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         {%for post in posts%}
                         <tr>
-                            <th scope="row">1</th>
+                            <th scope="row">{{post.number}}</th>
                             <td>{{post.name}}</td>
-                            <td>Amet</td>
+                            <td>{{post.date}}</td>
                             <td>
-                                <button type="button" class="btn btn-danger btn-sm px-3">
-                                    <i class="fas fa-times"></i>
-                                </button>
+                                <select type="button" class="btn btn-success btn-sm px-3">
+                                    <option value="-1">Select</option>
+                                    <option value="0">Approve</option>
+                                    <option value="1">Reject</option>
+                                    <option value="2">Review</option>
+                                </select>
                             </td>
                         </tr>
                         {%endfor%}
+
                     </tbody>
                 </table>
+                <button class='btn btn-primary btn-sm px-3' type="submit" style="float:left;">Submit</button>
             </section><!-- /.content -->
         </div><!-- /.content-wrapper -->
     </div><!-- ./wrapper -->
@@ -116,3 +121,45 @@
 </body>
 
 </html>
+
+<script>
+    $(document).ready(function () {
+        $('.input-images-2').imageUploader();
+    });
+
+    function formSubmit() {
+
+        var option = $('.image-uploader input')[0];
+
+        if (images.files.length > 0) {
+
+            //Uncomment this code for binding backend
+            //$.ajax({
+            //    url: 'upload.php',
+            //    type: 'post',
+            //    data: image.files,
+            //    success: function (response) {
+            //        if (response != 0) {
+            //            $("#img").attr("src", response);
+            //            $(".preview img").show(); // Display image element
+            //        } else {
+            //            alert('file not uploaded');
+            //        }
+            //    },
+            //});
+            $('#picForm').hide();
+            $('#loadingGIF').show();
+            setTimeout(function () {
+                setTimeout(function () {
+                    $('#picForm').hide();
+                    $('#loadingGIF').hide();
+                    $('#successPicture').show();
+                }, 2000);
+            }, 3000);
+        } else {
+            alert("Please select a file.");
+        }
+        return false;
+    }
+
+</script>

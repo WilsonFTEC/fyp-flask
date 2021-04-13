@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from . import db
 from fyp.decision import Prediction
 from .models import User
+from datetime import datetime
 
 main = Blueprint("main", __name__)
 
@@ -71,7 +72,12 @@ def index():
 @main.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
-    post = [{"name": "abc"}, {"name": "cde"}]
+    number = ["C00001", "C00002"]
+    time = datetime.today().date()
+    post = [
+        {"number": number[0], "name": "abc", "date": time},
+        {"number": number[1], "name": "cde", "date": time},
+    ]
     return render_template("admin.html", posts=post)
 
 
