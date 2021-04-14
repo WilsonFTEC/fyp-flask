@@ -23,9 +23,23 @@ def profile():
 @main.route("/newapplication")
 @login_required
 def newapplication():
-    aid = "C0000" + str(current_user.id)
+    aid = "C00000" + str(current_user.id)
     email = current_user.email
-    # new_application = Car(aid=aid, email=email)
+    # new_application = Car(
+    #     aid=aid,
+    #     A=0,
+    #     B=0,
+    #     C=0,
+    #     D=0,
+    #     E=0,
+    #     F=0,
+    #     G=0,
+    #     H=0,
+    #     I=0,
+    #     J=0,
+    #     email=email,
+    #     status="",
+    # )
     # db.session.add(new_application)
     # db.session.commit()
 
@@ -41,7 +55,7 @@ def report():
         status = ""
     else:
         status = current_user.status
-    status = "failed"
+    status = "passed"
     applicationNumber = "C0000" + str(current_user.id)
     amount = round(current_user.result, 2)
     return render_template(
@@ -61,7 +75,7 @@ def trackprogress():
         status = ""
     else:
         status = current_user.status
-    status = "failed"
+    status = "running"
     time = datetime.today().date()
     return render_template(
         "TrackProgress.html", name=current_user.name, status=status, time=time
@@ -96,13 +110,12 @@ def index():
 @main.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
-    #number = Car.query.filer_by(email="running").all()
+    # number = Car.query.filer_by(email="running").all()
     time = (datetime.today() - timedelta(1)).date()
     post = [
         {"number": "C00001", "name": "test1", "date": time},
         {"number": "C00002", "name": "test2", "date": time},
         {"number": "C00003", "name": "test3", "date": time},
-
     ]
     return render_template("admin.html", posts=post)
 
