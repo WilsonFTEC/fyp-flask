@@ -32,7 +32,7 @@ def login_post():
     # if the above check passes, then we know the user has the right credentials
     login_user(user, remember=remember)
     if user.email == "admin@email.com":
-        return redirect(url_for("main.admin"))
+        return redirect(url_for("main.admin_profile"))
 
     return redirect(url_for("main.profile"))
 

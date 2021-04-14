@@ -103,26 +103,26 @@
 
             <!-- Main content -->
             <section class="content">
-                {% if status == 'success'%}
+                {% if status == 'passed'%}
                 <div class="success container-fluid">
                     <div class="card text-center" style="width: 18rem;">
                         <img class="card-img-top" src="static/dist/img/greentick.png" style="height:180px;"
                             alt="Card image cap">
                         <div class="card-body">
-                            <p class="card-text">Dear <span class="userName"><strong>{{name}}</strong></span> <br /> Your
-                                application is accepted. Here is your application number {{applicationNumber}}.</p>
+                            <p class="card-text">Dear <span class="userName"><strong>{{name}}, </strong></span> <br /> Your
+                                application {{applicationNumber}} is Accepted.<br> Here is your compensation {{amount}}.</p>
                         </div>
                     </div>
                 </div>
                 {%endif%}
-                {% if status == 'fail'%}
+                {% if status == 'failed'%}
                 <div class="reject container-fluid">
                     <div class="card text-center" style="width: 18rem;">
                         <img class="card-img-top" src="static/dist/img/redcross.png" style="height:180px;"
                             alt="Card image cap">
                         <div class="card-body">
-                            <p class="card-text">Dear <span class="userName"><strong>{{name}}</strong></span> <br /> Your
-                                application is rejected due to {{reason}} reason</p>
+                            <p class="card-text">Dear <span class="userName"><strong>{{name}}, </strong></span> <br /> Your
+                                application is rejected due to {{reason}}.</p>
                         </div>
                     </div>
                 </div>

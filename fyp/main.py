@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, app, render_template, request
 from flask_login import login_required, current_user
 from . import db
 from fyp.decision import Prediction
-from .models import User
-from datetime import datetime
+from .models import User, Car
+from datetime import datetime, timedelta
 
 main = Blueprint("main", __name__)
 
@@ -23,25 +23,49 @@ def profile():
 @main.route("/newapplication")
 @login_required
 def newapplication():
-    user_id = "C0000" + str(current_user.id)
-    return render_template("NewApplication.html", applicationNumber=user_id)
+    aid = "C0000" + str(current_user.id)
+    email = current_user.email
+    # new_application = Car(aid=aid, email=email)
+    # db.session.add(new_application)
+    # db.session.commit()
+
+    return render_template("NewApplication.html", applicationNumber=aid)
 
 
 @main.route("/report")
 @login_required
 def report():
-    reason = "Invalid file"
-    status = ""
+    r = ["Invalid File Format"]
+    reason = r[0]
+    if not current_user.status:
+        status = ""
+    else:
+        status = current_user.status
+    status = "failed"
+    applicationNumber = "C0000" + str(current_user.id)
+    amount = round(current_user.result, 2)
     return render_template(
-        "Report.html", name=current_user.name, reason=reason, status=status
+        "Report.html",
+        name=current_user.name,
+        reason=reason,
+        status=status,
+        applicationNumber=applicationNumber,
+        amount=amount,
     )
 
 
 @main.route("/trackprogress")
 @login_required
 def trackprogress():
-    status = "running"
-    return render_template("TrackProgress.html", name=current_user.name, status=status)
+    if not current_user.status:
+        status = ""
+    else:
+        status = current_user.status
+    status = "failed"
+    time = datetime.today().date()
+    return render_template(
+        "TrackProgress.html", name=current_user.name, status=status, time=time
+    )
 
 
 @main.route("/virtualassit")
@@ -72,13 +96,25 @@ def index():
 @main.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
-    number = ["C00001", "C00002"]
-    time = datetime.today().date()
+    #number = Car.query.filer_by(email="running").all()
+    time = (datetime.today() - timedelta(1)).date()
     post = [
-        {"number": number[0], "name": "abc", "date": time},
-        {"number": number[1], "name": "cde", "date": time},
+        {"number": "C00001", "name": "test1", "date": time},
+        {"number": "C00002", "name": "test2", "date": time},
+        {"number": "C00003", "name": "test3", "date": time},
+
     ]
     return render_template("admin.html", posts=post)
+
+
+@main.route("/adminprofile")
+@login_required
+def admin_profile():
+    return render_template(
+        "admin_profile.html",
+        name=current_user.name,
+        email=current_user.email,
+    )
 
 
 @main.route("/test")

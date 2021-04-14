@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>User Profile | Dashboard</title>
+    <title>Admin Profile | Dashboard</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -52,8 +52,8 @@
         }
 
         .bg-c-lite-green {
-            background: -webkit-gradient(linear, left top, right top, from(#008d4c), to(#56d84a));
-            background: linear-gradient(to right, #008d4c, #56d84a)
+            background: -webkit-gradient(linear, left top, right top, from(#dd4b39), to(#f58273));
+            background: linear-gradient(to right, #dd4b39, #f58273)
         }
 
         .user-profile {
@@ -155,12 +155,12 @@
     </style>
 </head>
 
-<body class="skin-green">
+<body class="skin-red">
     <div class="wrapper">
 
         <header class="main-header">
             <!-- Logo -->
-            <a href="/" class="logo"><b>FTEC</b> FYP</a>
+            <a href="/adminprofile" class="logo"><b>FTEC</b> FYP</a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
@@ -177,29 +177,14 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="header"><br></li>
-                    <li class="active">
-                        <a href="/">
-                            <i class="fa fa-th"></i> <span>User Portfolio</span>
+                    <li>
+                        <a href="/adminprofile">
+                            <i class="fa fa-th"></i> <span>Admin Portfolio</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/newapplication">
-                            <i class="fa fa-th"></i> <span>New Application</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/trackprogress">
-                            <i class="fa fa-th"></i> <span>Track the Progress</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/report">
-                            <i class="fa fa-th"></i> <span>Report</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/virtualassit">
-                            <i class="fa fa-th"></i> <span>Virtual Assistant</span>
+                        <a href="/admin">
+                            <i class="fa fa-th"></i> <span>View Application</span>
                         </a>
                     </li>
                     <li>
@@ -217,7 +202,7 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Portfolio
+                    Admin Portfolio
                     <small></small>
                 </h1>
                 <ol class="breadcrumb">
@@ -234,10 +219,11 @@
                                     <div class="row m-l-0 m-r-0">
                                         <div class="col-sm-4 bg-c-lite-green user-profile">
                                             <div class="card-block text-center text-white">
-                                                <div class="m-b-25"> <img src="https://img.icons8.com/bubbles/100/000000/user.png"
+                                                <div class="m-b-25"> <img
+                                                        src="/static/dist/img/user8.jpg"
                                                         class="img-radius" alt="User-Profile-Image"> </div>
                                                 <h6 class="f-w-600">{{name}}</h6>
-                                                <p>Web Designer</p> <i
+                                                <p>ABC Company</p> <i
                                                     class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
                                             </div>
                                         </div>
@@ -252,13 +238,6 @@
                                                     <div class="col-sm-6">
                                                         <p class="m-b-10 f-w-600">Phone</p>
                                                         <h6 class="text-muted f-w-400">12345678</h6>
-                                                    </div>
-                                                </div>
-                                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Compensation</h6>
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <p class="m-b-10 f-w-600">Amount</p>
-                                                        <h6 class="text-muted f-w-400">{{result}}</h6>
                                                     </div>
                                                 </div>
                                             </div>

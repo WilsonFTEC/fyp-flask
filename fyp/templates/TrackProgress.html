@@ -223,8 +223,8 @@
                     </tr>
                     {%if status=='running' %}
                     <tr>
-                        <td>test</td>
-                        <td>Test</td>
+                        <td>Car</td>
+                        <td>{{time}}</td>
                         <td class="background background__running">
                             <div class="progress">
                                 <div class="indeterminate"></div>
@@ -235,8 +235,8 @@
                     {%endif%}
                     {%if status=='passed' %}
                     <tr>
-                        <td>test</td>
-                        <td>Test</td>
+                        <td>Car</td>
+                        <td>{{time}}</td>
                         <td class="background background__pass">
                             <div class="progress">
                                 <div class="indeterminate"></div>
@@ -247,8 +247,8 @@
                     {%endif%}
                     {%if status=='failed' %}
                     <tr>
-                        <td>test</td>
-                        <td>Test</td>
+                        <td>Car</td>
+                        <td>{{time}}</td>
                         <td class="background background__fail">
                             <div class="progress">
                                 <div class="indeterminate"></div>
@@ -259,13 +259,13 @@
                     {%endif%}
                     {%if status=='' %}
                     <tr>
-                        <td>No Application</td>
-                        <td>No Application</td>
+                        <td>No Record</td>
+                        <td>No Record</td>
                         <td class="background background__reviewed">
                             <div class="progress">
                                 <div class="indeterminate"></div>
                             </div>
-                            <a href="#">None</a>
+                            <a href="#">N/A</a>
                         </td>
                     </tr>
                     {%endif%}
