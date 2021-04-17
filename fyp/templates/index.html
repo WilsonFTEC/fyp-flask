@@ -91,69 +91,15 @@
 
             <!-- Main content -->
             <section class="content">
-                <form name="form_ai" method="POST" action="/">
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">A</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">B</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">C</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">D</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">E</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">F</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">G</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">H</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">I</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
-                    <select id="category" name="category" class="col-md-9 form-control">
-                        <option value="-1">J</option>
-                        <option value="0">Car Insurance</option>
-                        <option value="1">Flight Insurance</option>
-                        <option value="2">Other</option>
-                    </select>
+                <form method="POST" action="/predict">
                     <fieldset>
                         <legend>Predict the Compensation</legend>
+                            <select name="ca" class="btn btn-success btn-sm px-3">
+                                <option value="0">1</option>
+                                <option value="1">2</option>
+                                <option value="2">3</option>
+                                <option value="3">4</option>
+                            </select>
                         <input type="submit" value="Submit">
                     </fieldset>
                 </form>

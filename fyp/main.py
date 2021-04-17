@@ -20,44 +20,55 @@ def profile():
     )
 
 
-@main.route("/newapplication")
+@main.route("/newapplication", methods=["GET", "POST"])
 @login_required
 def newapplication():
-    aid = "C00000" + str(current_user.id)
-    email = current_user.email
-    # new_application = Car(
-    #     aid=aid,
-    #     A=0,
-    #     B=0,
-    #     C=0,
-    #     D=0,
-    #     E=0,
-    #     F=0,
-    #     G=0,
-    #     H=0,
-    #     I=0,
-    #     J=0,
-    #     email=email,
-    #     status="",
-    # )
-    # db.session.add(new_application)
-    # db.session.commit()
+    if request.method == "POST":
+        all_user = Car.query.all()
+        aid = "C0000" + str(len(all_user) + 1)
+        email = current_user.email
+        user = Car.query.filter_by(email=email).all()
+        for u in user:
+            if "running" in u.status:
+                print(u.status)
+                return render_template("test.html", test=user)
+        time = datetime.today().date()
+        new_application = Car(
+            aid=aid,
+            A=0,
+            B=0,
+            C=0,
+            D=0,
+            E=0,
+            F=0,
+            G=0,
+            H=0,
+            I=0,
+            J=0,
+            email=email,
+            status="running",
+            date=time,
+            result=0,
+        )
+        db.session.add(new_application)
+        db.session.commit()
+        return render_template("NewApplication.html", applicationNumber=aid)
 
-    return render_template("NewApplication.html", applicationNumber=aid)
+    return render_template("NewApplication.html")
 
 
 @main.route("/report")
 @login_required
 def report():
+    email = current_user.email
+    all_user = Car.query.filter_by(email=email).all()
+    user = all_user[len(all_user) - 1]
     r = ["Invalid File Format"]
     reason = r[0]
-    if not current_user.status:
-        status = ""
-    else:
-        status = current_user.status
-    status = "passed"
-    applicationNumber = "C0000" + str(current_user.id)
-    amount = round(current_user.result, 2)
+    amount = 0
+    status = user.status
+    amount = round(user.result, 2)
+    applicationNumber = user.aid
     return render_template(
         "Report.html",
         name=current_user.name,
@@ -94,9 +105,11 @@ def index():
     result = 0
     if request.method == "POST":
         # hardcoding
-        data = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+        A = int(request.form.get("ca"))
+        data = [[A, 0, 0, 0, 5, 7, 1, 6, 3, 3]]
         prediction = Prediction(data)
         result = prediction.test()
+        # result = data
         user = User.query.filter_by(email=current_user.email).first()
         user.result = result
 
@@ -110,14 +123,32 @@ def index():
 @main.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
-    # number = Car.query.filer_by(email="running").all()
-    time = (datetime.today() - timedelta(1)).date()
-    post = [
-        {"number": "C00001", "name": "test1", "date": time},
-        {"number": "C00002", "name": "test2", "date": time},
-        {"number": "C00003", "name": "test3", "date": time},
-    ]
-    return render_template("admin.html", posts=post)
+    all_user = Car.query.filter_by(status="running").all()
+
+    posts = []
+
+    for user in all_user:
+        post = {"number": user.aid, "email": user.email, "date": (user.date)[5:]}
+        posts.append(post)
+
+    user_amount = 0
+    if len(posts) > 0:
+        user_amount = 1
+
+    status = [""]
+    if request.method == "POST":
+        
+        status = request.form.getlist("ca")
+        i = 0
+        for user in all_user:
+            user.status = status[i]
+            db.session.commit()
+
+            i = i + 1
+
+    return render_template(
+        "admin.html", posts=posts, status=status, user_amount=user_amount
+    )
 
 
 @main.route("/adminprofile")
@@ -133,4 +164,13 @@ def admin_profile():
 @main.route("/test")
 @login_required
 def test():
-    return render_template("test.html", test=111, a="0")
+    email = current_user.email
+    all_user = Car.query.filter_by(status="running").all()
+
+    posts = []
+
+    for user in all_user:
+        post = {"number": user.aid, "name": user.email, "date": user.date}
+        posts.append(post)
+
+    return render_template("test.html", test=posts)
