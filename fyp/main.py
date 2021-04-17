@@ -23,6 +23,15 @@ def profile():
 @main.route("/newapplication", methods=["GET", "POST"])
 @login_required
 def newapplication():
+    all_user = Car.query.all()
+    aid = "C0000" + str(len(all_user) + 1)
+    email = current_user.email
+    user = Car.query.filter_by(email=email).all()
+    for u in user:
+        if "running" in u.status:
+            print(u.status)
+            return render_template("test.html", name=current_user.name)
+
     if request.method == "POST":
         all_user = Car.query.all()
         aid = "C0000" + str(len(all_user) + 1)
@@ -82,12 +91,11 @@ def report():
 @main.route("/trackprogress")
 @login_required
 def trackprogress():
-    if not current_user.status:
-        status = ""
-    else:
-        status = current_user.status
-    status = "running"
-    time = datetime.today().date()
+    email = current_user.email
+    all_user = Car.query.filter_by(email=email).all()
+    user = all_user[len(all_user) - 1]
+    status = user.status
+    time = user.date
     return render_template(
         "TrackProgress.html", name=current_user.name, status=status, time=time
     )
@@ -137,14 +145,17 @@ def admin():
 
     status = [""]
     if request.method == "POST":
-        
+
         status = request.form.getlist("ca")
         i = 0
         for user in all_user:
-            user.status = status[i]
-            db.session.commit()
+            if status is not None:
+                user.status = status[i]
+                profile = User.query.filter_by(email=user.email).first()
+                profile.result = user.result
+                db.session.commit()
 
-            i = i + 1
+                i = i + 1
 
     return render_template(
         "admin.html", posts=posts, status=status, user_amount=user_amount
