@@ -111,19 +111,10 @@
 
             <!-- Main content -->
             <section class="content">
-                <div class="container">
-                    <div class="card text-center" style="width: 18rem;">
-                        <img class="card-img-top" src="static/dist/img/pleasewait.gif" style="height:180px;"
-                            alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">Dear <span class="userName"><strong>{{name}}</strong></span> <br /> You
-                                application is processing.
-                            </p>
-                        </div>
-                    </div>
+                <div id="successPicture" class="row text-center" style="width:50%; margin:auto;">
+                    <img class="responsive" src="static/dist/img/greentick.png" />
+                    <h3>Thank you!<br> Your ongoing Application Number is <span id="applicationNumber">{{applicationNumber}}.</span> </h3>
                 </div>
-
-
             </section><!-- /.content -->
         </div><!-- /.content-wrapper -->
     </div><!-- ./wrapper -->
@@ -142,45 +133,3 @@
 </body>
 
 </html>
-
-<script>
-    $(document).ready(function () {
-        $('.input-images-2').imageUploader();
-    });
-
-    function formSubmit() {
-
-        var images = $('.image-uploader input')[0];
-
-        if (images.files.length > 0) {
-
-            //Uncomment this code for binding backend
-            //$.ajax({
-            //    url: 'upload.php',
-            //    type: 'post',
-            //    data: image.files,
-            //    success: function (response) {
-            //        if (response != 0) {
-            //            $("#img").attr("src", response);
-            //            $(".preview img").show(); // Display image element
-            //        } else {
-            //            alert('file not uploaded');
-            //        }
-            //    },
-            //});
-            $('#picForm').hide();
-            $('#loadingGIF').show();
-            setTimeout(function () {
-                setTimeout(function () {
-                    $('#picForm').hide();
-                    $('#loadingGIF').hide();
-                    $('#successPicture').show();
-                }, 2000);
-            }, 3000);
-        } else {
-            alert("Please select a file.");
-        }
-        return false;
-    }
-
-</script>

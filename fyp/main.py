@@ -1,5 +1,6 @@
-from flask import Blueprint, app, render_template, request
+from flask import Blueprint, app, render_template, request, url_for, redirect
 from flask_login import login_required, current_user
+from jinja2.utils import urlize
 from . import db
 from fyp.decision import Prediction
 from .models import User, Car
@@ -20,27 +21,25 @@ def profile():
     )
 
 
-@main.route("/newapplication", methods=["GET", "POST"])
+@main.route("/newapplication")
 @login_required
 def newapplication():
-    all_user = Car.query.all()
-    aid = "C0000" + str(len(all_user) + 1)
     email = current_user.email
     user = Car.query.filter_by(email=email).all()
     for u in user:
         if "running" in u.status:
-            print(u.status)
-            return render_template("test.html", name=current_user.name)
+            return render_template("test.html", applicationNumber=u.aid)
+    return render_template("NewApplication.html")
+
+
+@main.route("/newapplication", methods=["POST"])
+@login_required
+def newapplication_post():
+    all_user = Car.query.all()
+    aid = "C0000" + str(len(all_user) + 1)
+    email = current_user.email
 
     if request.method == "POST":
-        all_user = Car.query.all()
-        aid = "C0000" + str(len(all_user) + 1)
-        email = current_user.email
-        user = Car.query.filter_by(email=email).all()
-        for u in user:
-            if "running" in u.status:
-                print(u.status)
-                return render_template("test.html", test=user)
         time = datetime.today().date()
         new_application = Car(
             aid=aid,
@@ -61,9 +60,8 @@ def newapplication():
         )
         db.session.add(new_application)
         db.session.commit()
-        return render_template("NewApplication.html", applicationNumber=aid)
 
-    return render_template("NewApplication.html")
+    return redirect(url_for("main.newapplication"))
 
 
 @main.route("/report")
@@ -107,28 +105,26 @@ def virtualassit():
     return render_template("VirtualAssistant.html")
 
 
-@main.route("/predict", methods=["GET", "POST"])
+@main.route("/predict", methods=["POST"])
 @login_required
 def index():
     result = 0
-    if request.method == "POST":
-        # hardcoding
-        A = int(request.form.get("ca"))
-        data = [[A, 0, 0, 0, 5, 7, 1, 6, 3, 3]]
-        prediction = Prediction(data)
-        result = prediction.test()
-        # result = data
-        user = User.query.filter_by(email=current_user.email).first()
-        user.result = result
+    #if request.method == "POST":
+    # hardcoding
+    A = int(request.form.get("ca"))
+    data = [[A, 0, 0, 0, 5, 7, 1, 6, 3, 3]]
+    prediction = Prediction(data)
+    result = prediction.test()
+    # result = data
+    user = User.query.filter_by(email=current_user.email).first()
+    user.result = result
 
-        # update data to the database
-        db.session.commit()
-        return render_template("index.html", title="AI Page | Dashboard", value=result)
-    else:
-        return render_template("index.html", title="AI Page | Dashboard")
+    # update data to the database
+    db.session.commit()
+    return user
 
 
-@main.route("/admin", methods=["GET", "POST"])
+@main.route("/admin")
 @login_required
 def admin():
     all_user = Car.query.filter_by(status="running").all()
@@ -143,6 +139,14 @@ def admin():
     if len(posts) > 0:
         user_amount = 1
 
+    # return str(user_amount)
+    return render_template("admin.html", posts=posts, user_amount=user_amount)
+
+
+@main.route("/admin", methods=["POST"])
+@login_required
+def admin_post():
+    all_user = Car.query.filter_by(status="running").all()
     status = [""]
     if request.method == "POST":
 
@@ -157,9 +161,7 @@ def admin():
 
                 i = i + 1
 
-    return render_template(
-        "admin.html", posts=posts, status=status, user_amount=user_amount
-    )
+    return redirect(url_for("main.admin"))
 
 
 @main.route("/adminprofile")

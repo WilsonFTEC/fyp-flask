@@ -14,7 +14,7 @@ import requests
 url_api = "https://api.ocr.space/parse/image"
 #_, compressedimage = cv2.imencode(".jpg", roi, [1, 90])
 #file_bytes = io.BytesIO(compressedimage)
-with open('a.png', 'rb') as f:
+with open('/home/wilson/fyp/fyp-flask/fyp/data/files/image.png', 'rb') as f:
     result = requests.post(url_api,
                 files = {'abc.png': f},
                 data = {"apikey": "bf7420f44f88957",
@@ -25,5 +25,6 @@ result = json.loads(result)
 
 parsed_results = result.get("ParsedResults")[0]
 text_detected = parsed_results.get("ParsedText")
-
-print(text_detected)
+output = (ord(t) for t in text_detected)
+print(len(text_detected))
+print(output)

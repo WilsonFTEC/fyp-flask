@@ -77,6 +77,7 @@
             <!-- Main content -->
             <section class="content">
                 <form method="POST" action="/admin">
+                    
                     <table class="table align-middle">
                         <thead>
                             <tr>
@@ -104,6 +105,7 @@
 
                         </tbody>
                     </table>
+                    
                     {%if user_amount == 0%}
                     <legend>No ongoing cases</legend>
                     {%endif%}
@@ -125,45 +127,3 @@
 </body>
 
 </html>
-
-<script>
-    $(document).ready(function () {
-        $('.input-images-2').imageUploader();
-    });
-
-    function formSubmit() {
-
-        var option = $('.image-uploader input')[0];
-
-        if (images.files.length > 0) {
-
-            //Uncomment this code for binding backend
-            //$.ajax({
-            //    url: 'upload.php',
-            //    type: 'post',
-            //    data: image.files,
-            //    success: function (response) {
-            //        if (response != 0) {
-            //            $("#img").attr("src", response);
-            //            $(".preview img").show(); // Display image element
-            //        } else {
-            //            alert('file not uploaded');
-            //        }
-            //    },
-            //});
-            $('#picForm').hide();
-            $('#loadingGIF').show();
-            setTimeout(function () {
-                setTimeout(function () {
-                    $('#picForm').hide();
-                    $('#loadingGIF').hide();
-                    $('#successPicture').show();
-                }, 2000);
-            }, 3000);
-        } else {
-            alert("Please select a file.");
-        }
-        return false;
-    }
-
-</script>
