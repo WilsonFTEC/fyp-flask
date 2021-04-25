@@ -1,10 +1,14 @@
-from flask import Blueprint, app, render_template, request, url_for, redirect
+from flask import Blueprint, app, render_template, request, url_for, redirect, flash
 from flask_login import login_required, current_user
 from jinja2.utils import urlize
 from . import db
 from fyp.decision import Prediction
 from .models import User, Car
 from datetime import datetime, timedelta
+import json
+import numpy as np
+import requests
+
 
 main = Blueprint("main", __name__)
 
@@ -28,7 +32,7 @@ def newapplication():
     user = Car.query.filter_by(email=email).all()
     for u in user:
         if "running" in u.status:
-            return render_template("test.html", applicationNumber=u.aid)
+            return render_template("loading.html", applicationNumber=u.aid)
     return render_template("NewApplication.html")
 
 
@@ -94,34 +98,78 @@ def trackprogress():
     user = all_user[len(all_user) - 1]
     status = user.status
     time = user.date
+    if status != "":
+        value = round(user.result, 2)
     return render_template(
-        "TrackProgress.html", name=current_user.name, status=status, time=time
+        "TrackProgress.html",
+        name=current_user.name,
+        status=status,
+        time=time,
+        value=value,
     )
 
 
 @main.route("/virtualassit")
 @login_required
 def virtualassit():
+
     return render_template("VirtualAssistant.html")
+
+
+@main.route("/predict")
+@login_required
+def predict():
+    user = Car.query.filter_by(email=current_user.email, status="running").first()
+    return render_template("predict.html", value=user.result)
 
 
 @main.route("/predict", methods=["POST"])
 @login_required
-def index():
+def predict_post():
     result = 0
-    #if request.method == "POST":
-    # hardcoding
-    A = int(request.form.get("ca"))
-    data = [[A, 0, 0, 0, 5, 7, 1, 6, 3, 3]]
-    prediction = Prediction(data)
-    result = prediction.test()
-    # result = data
-    user = User.query.filter_by(email=current_user.email).first()
-    user.result = result
+    if request.method == "POST":
+        user = Car.query.filter_by(email=current_user.email, status="running").first()
+        if user.result > 0:
+            flash("You have made the prediction!")
+            return redirect(url_for("main.trackprogress"))
+        # hardcoding
+        # A = int(request.form.get("ca"))
+        url_api = "https://api.ocr.space/parse/image"
+        with open("/home/wilson/fyp/fyp-flask/fyp/data/files/image.png", "rb") as f:
+            result = requests.post(
+                url_api,
+                files={"abc.png": f},
+                data={"apikey": "bf7420f44f88957", "language": "eng"},
+            )
 
-    # update data to the database
-    db.session.commit()
-    return user
+        result = result.content.decode()
+        result = json.loads(result)
+
+        parsed_results = result.get("ParsedResults")[0]
+        text_detected = parsed_results.get("ParsedText")
+        output = []
+        for t in text_detected:
+            output.append(ord(t) - 64)
+
+        data = [output[:10]]
+        prediction = Prediction(data)
+        result = prediction.test()
+        
+        user.result = result
+        user.A=output[0]
+        user.B=output[1]
+        user.C=output[2]
+        user.D=output[3]
+        user.E=output[4]
+        user.F=output[5]
+        user.G=output[6]
+        user.H=output[7]
+        user.I=output[8]
+        user.J=output[9]
+
+        # update data to the database
+        db.session.commit()
+    return redirect(url_for("main.trackprogress"))
 
 
 @main.route("/admin")
@@ -156,7 +204,11 @@ def admin_post():
             if status is not None:
                 user.status = status[i]
                 profile = User.query.filter_by(email=user.email).first()
-                profile.result = user.result
+                if status[i] == "passed":
+                    profile.result = user.result
+                else:
+                    profile.result = 0
+                    user.result = 0
                 db.session.commit()
 
                 i = i + 1
@@ -177,13 +229,4 @@ def admin_profile():
 @main.route("/test")
 @login_required
 def test():
-    email = current_user.email
-    all_user = Car.query.filter_by(status="running").all()
-
-    posts = []
-
-    for user in all_user:
-        post = {"number": user.aid, "name": user.email, "date": user.date}
-        posts.append(post)
-
-    return render_template("test.html", test=posts)
+    return render_template("test.html")

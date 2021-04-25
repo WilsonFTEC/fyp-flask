@@ -94,18 +94,13 @@
                 <form method="POST" action="/predict">
                     <fieldset>
                         <legend>Predict the Compensation</legend>
-                            <select name="ca" class="btn btn-success btn-sm px-3">
-                                <option value="0">1</option>
-                                <option value="1">2</option>
-                                <option value="2">3</option>
-                                <option value="3">4</option>
-                            </select>
-                        <input type="submit" value="Submit">
+
+                        <button class='btn btn-primary btn-sm px-3' type="submit" style="float:right;">Submit</button>
                     </fieldset>
+                    <div>
+                        <h4> Predicted Amount: {{ value }} </h4>
+                    </div>
                 </form>
-                <div>
-                    <h4> Predicted Amount: {{ value }} </h4>
-                </div>
             </section><!-- /.content -->
         </div><!-- /.content-wrapper -->
     </div><!-- ./wrapper -->

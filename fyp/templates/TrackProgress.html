@@ -17,7 +17,6 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
     <link href="static/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
-
     <style>
         @import "bourbon";
         @import "neat";
@@ -138,6 +137,63 @@
             line-height: 1;
             left: 10px;
         }
+
+        legend {
+            text-align: center;
+        }
+
+        h4 {
+            text-align: center;
+        }
+
+        .btn-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+
+        .notification {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 1.25rem 2.5rem 1.25rem 1.5rem;
+            position: relative;
+        }
+
+        .notification a:not(.button):not(.dropdown-item) {
+            color: currentColor;
+            text-decoration: underline;
+        }
+
+        .notification strong {
+            color: currentColor;
+        }
+
+        .notification code,
+        .notification pre {
+            background: #fff;
+        }
+
+        .notification pre code {
+            background: 0 0;
+        }
+
+        .notification>.delete {
+            position: absolute;
+            right: .5rem;
+            top: .5rem;
+        }
+
+        .notification .content,
+        .notification .subtitle,
+        .notification .title {
+            color: currentColor;
+        }
+
+        .notification.is-danger {
+            background-color: #ff3860;
+            color: #fff;
+        }
     </style>
 
 
@@ -217,8 +273,8 @@
 
                 <table width="100%">
                     <tr>
-                        <th>   Type </th>
-                        <th>   Date </th>
+                        <th> Type </th>
+                        <th> Date </th>
                         <th>Status </th>
                     </tr>
                     {%if status=='running' %}
@@ -270,6 +326,33 @@
                     </tr>
                     {%endif%}
                 </table>
+                <br>
+                <br>
+                <br>
+
+                {%if status == 'running'%}
+                <form method="POST" action="/predict">
+                    <fieldset>
+                        <legend>Wanna make a prediction?</legend>
+
+                        <div class="btn-center">
+                            <button class='btn btn-primary btn-lg' type="submit">Submit</button>
+                        </div>
+                    </fieldset>
+                    {%if value != 0%}
+                    <div>
+                        <h4> Predicted Amount: {{ value }} </h4>
+                    </div>
+                    {%endif%}
+                </form>
+                {%endif%}
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="notification is-danger">
+                    <h4>{{ messages[0] }}</h4>
+                </div>
+                {% endif %}
+                {% endwith %}
             </section><!-- /.content -->
         </div><!-- /.content-wrapper -->
     </div><!-- ./wrapper -->

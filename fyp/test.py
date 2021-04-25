@@ -25,6 +25,8 @@ result = json.loads(result)
 
 parsed_results = result.get("ParsedResults")[0]
 text_detected = parsed_results.get("ParsedText")
-output = (ord(t) for t in text_detected)
+output = []
+for t in text_detected:
+    output.append(ord(t)-64)
 print(len(text_detected))
-print(output)
+print(output[:10])
