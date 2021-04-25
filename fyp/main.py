@@ -9,6 +9,12 @@ import json
 import numpy as np
 import requests
 
+from flask import Flask, render_template, request
+from werkzeug.utils import secure_filename
+import os
+
+app = Flask(__name__)
+app.config["UPLOAD_FOLDER"] = "/home/wilson/fyp/fyp-flask/fyp/data/files"
 
 main = Blueprint("main", __name__)
 
@@ -64,6 +70,34 @@ def newapplication_post():
         )
         db.session.add(new_application)
         db.session.commit()
+        # save file locally
+        f = request.files["file"]
+        print(f)
+        f.filename = "image.png"
+        f.save(os.path.join(app.config["UPLOAD_FOLDER"], f.filename))
+    
+        # upload file to ggogle drive
+        gauth = GoogleAuth()
+        gauth.LocalWebserverAuth()
+        drive = GoogleDrive(gauth)
+
+
+        def upload_file():
+            gfile = drive.CreateFile(
+                {
+                    "parents": [
+                        {
+                            "id": "1R59F10zZ09rjchcuqSlEZgzFLsLamIN9",
+                        }
+                    ]
+                }
+            )
+            # Read file and set it as the content of this instance.
+            gfile.SetContentFile("/home/wilson/fyp/fyp-flask/fyp/data/files/image.png")
+            gfile.Upload(param={"supportsTeamDrives": True})  # Upload the file.
+            return redirect(url_for("main.newapplication"))
+
+        upload_file()
 
     return redirect(url_for("main.newapplication"))
 
@@ -154,18 +188,18 @@ def predict_post():
         data = [output[:10]]
         prediction = Prediction(data)
         result = prediction.test()
-        
+
         user.result = result
-        user.A=output[0]
-        user.B=output[1]
-        user.C=output[2]
-        user.D=output[3]
-        user.E=output[4]
-        user.F=output[5]
-        user.G=output[6]
-        user.H=output[7]
-        user.I=output[8]
-        user.J=output[9]
+        user.A = output[0]
+        user.B = output[1]
+        user.C = output[2]
+        user.D = output[3]
+        user.E = output[4]
+        user.F = output[5]
+        user.G = output[6]
+        user.H = output[7]
+        user.I = output[8]
+        user.J = output[9]
 
         # update data to the database
         db.session.commit()
@@ -225,8 +259,31 @@ def admin_profile():
         email=current_user.email,
     )
 
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 
 @main.route("/test")
 @login_required
 def test():
-    return render_template("test.html")
+    gauth = GoogleAuth()
+    gauth.LocalWebserverAuth()
+    drive = GoogleDrive(gauth)
+
+
+    def upload_file():
+        gfile = drive.CreateFile(
+            {
+                "parents": [
+                    {
+                        "id": "1R59F10zZ09rjchcuqSlEZgzFLsLamIN9",
+                    }
+                ]
+            }
+        )
+        # Read file and set it as the content of this instance.
+        gfile.SetContentFile("/home/wilson/fyp/fyp-flask/fyp/data/files/image.png")
+        gfile.Upload(param={"supportsTeamDrives": True})  # Upload the file.
+
+    upload_file()
+
+    return "hello"

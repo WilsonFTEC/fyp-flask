@@ -113,7 +113,7 @@
             <section class="content">
 
                 <div id="picForm">
-                    <form method='POST' action="/newapplication" enctype="multipart/form-data" id="picForm">
+                    <form method='POST' enctype="multipart/form-data" id="picForm">
                         <div class="input-field form-inline row">
                             <label for="category" class="active col-md-3">Category</label>
                             <select id="category" name="category" class="btn btn-success btn-sm px-3">
@@ -129,7 +129,7 @@
                             <div id="input-images" class="input-images-2" style="padding-top: .5rem;"></div>
                         </div>
                         <br />
-                        <button onclick="formSubmit()" class='btn btn-primary btn-sm px-3' type="submit"
+                        <button onclick="return formSubmit()" class='btn btn-primary btn-sm px-3' type="submit"
                             style="float:right;">Submit</button>
                     </form>
                 </div>
@@ -172,24 +172,36 @@
 
     function formSubmit() {
 
+
         var images = $('.image-uploader input')[0];
+        var data = new FormData();
+        $.each(images.files, function (i, file) {
+            data.append('file', file);
+        });
+
+        console.log(data)
 
         if (images.files.length > 0) {
 
+
             //Uncomment this code for binding backend
-            //$.ajax({
-            //    url: 'upload.php',
-            //    type: 'post',
-            //    data: image.files,
-            //    success: function (response) {
-            //        if (response != 0) {
-            //            $("#img").attr("src", response);
-            //            $(".preview img").show(); // Display image element
-            //        } else {
-            //            alert('file not uploaded');
-            //        }
-            //    },
-            //});
+            $.ajax({
+                dataType: 'json',
+                url: '/newapplication',
+                type: 'post',
+                data: data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (response) {
+                    if (response != 0) {
+                        $("#img").attr("src", response);
+                        $(".preview img").show(); // Display image element
+                    } else {
+                        alert('file not uploaded');
+                    }
+                },
+            });
             $('#picForm').hide();
             $('#loadingGIF').show();
             setTimeout(function () {
@@ -197,8 +209,9 @@
                     $('#picForm').hide();
                     $('#loadingGIF').hide();
                     $('#successPicture').show();
-                }, 2000);
-            }, 3000);
+                }, 1000);
+            }, 1000);
+            window.location = "/newapplication";
         } else {
             alert("Please select a file.");
         }
