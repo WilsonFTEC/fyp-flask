@@ -13,6 +13,10 @@ from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 import os
 
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+
+
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = "/home/wilson/fyp/fyp-flask/fyp/data/files"
 
@@ -22,6 +26,8 @@ main = Blueprint("main", __name__)
 @main.route("/")
 @login_required
 def profile():
+    if current_user.result is None:
+        current_user.result = 0
     amount = round(current_user.result, 2)
     return render_template(
         "profile.html",
@@ -68,6 +74,8 @@ def newapplication_post():
             date=time,
             result=0,
         )
+        profile = User.query.filter_by(email=email).first()
+        profile.result = 0
         db.session.add(new_application)
         db.session.commit()
         # save file locally
@@ -75,14 +83,15 @@ def newapplication_post():
         print(f)
         f.filename = "image.png"
         f.save(os.path.join(app.config["UPLOAD_FOLDER"], f.filename))
-    
-        # upload file to ggogle drive
+
+        # upload file to google drive
         gauth = GoogleAuth()
         gauth.LocalWebserverAuth()
         drive = GoogleDrive(gauth)
 
-
         def upload_file():
+            now = datetime.now()
+            timestamp = datetime.timestamp(now)
             gfile = drive.CreateFile(
                 {
                     "parents": [
@@ -93,7 +102,10 @@ def newapplication_post():
                 }
             )
             # Read file and set it as the content of this instance.
-            gfile.SetContentFile("/home/wilson/fyp/fyp-flask/fyp/data/files/image.png")
+            gfile.SetContentFile(
+                "/home/wilson/fyp/fyp-flask/fyp/static/files/image.png"
+            )
+            gfile["title"] = f"{timestamp}+{email}"
             gfile.Upload(param={"supportsTeamDrives": True})  # Upload the file.
             return redirect(url_for("main.newapplication"))
 
@@ -131,6 +143,7 @@ def trackprogress():
     all_user = Car.query.filter_by(email=email).all()
     user = all_user[len(all_user) - 1]
     status = user.status
+    aid = user.aid
     time = user.date
     if status != "":
         value = round(user.result, 2)
@@ -140,6 +153,7 @@ def trackprogress():
         status=status,
         time=time,
         value=value,
+        aid=aid,
     )
 
 
@@ -153,7 +167,7 @@ def virtualassit():
 @main.route("/predict")
 @login_required
 def predict():
-    user = Car.query.filter_by(email=current_user.email, status="running").first()
+    user = Car.query.filter_by(email=current_user.email).first()
     return render_template("predict.html", value=user.result)
 
 
@@ -169,10 +183,10 @@ def predict_post():
         # hardcoding
         # A = int(request.form.get("ca"))
         url_api = "https://api.ocr.space/parse/image"
-        with open("/home/wilson/fyp/fyp-flask/fyp/data/files/image.png", "rb") as f:
+        with open("/home/wilson/fyp/fyp-flask/fyp/static/files/image.png", "rb") as f:
             result = requests.post(
                 url_api,
-                files={"abc.png": f},
+                files={"image.png": f},
                 data={"apikey": "bf7420f44f88957", "language": "eng"},
             )
 
@@ -259,31 +273,21 @@ def admin_profile():
         email=current_user.email,
     )
 
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
 
-@main.route("/test")
+@main.route("/<aid>")
 @login_required
-def test():
-    gauth = GoogleAuth()
-    gauth.LocalWebserverAuth()
-    drive = GoogleDrive(gauth)
+def detail(aid):
+    user = Car.query.filter_by(aid=aid).first()
+    admin = 0
+    if current_user.email == "admin@email.com":
+        admin = 1
 
-
-    def upload_file():
-        gfile = drive.CreateFile(
-            {
-                "parents": [
-                    {
-                        "id": "1R59F10zZ09rjchcuqSlEZgzFLsLamIN9",
-                    }
-                ]
-            }
-        )
-        # Read file and set it as the content of this instance.
-        gfile.SetContentFile("/home/wilson/fyp/fyp-flask/fyp/data/files/image.png")
-        gfile.Upload(param={"supportsTeamDrives": True})  # Upload the file.
-
-    upload_file()
-
-    return "hello"
+    return render_template(
+        "detail.html",
+        aid=user.aid,
+        result=round(user.result, 2),
+        date=user.date,
+        number=aid,
+        email=user.email,
+        admin=admin,
+    )

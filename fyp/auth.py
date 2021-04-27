@@ -66,6 +66,9 @@ def signup_post():
         new_user = User(
             email=email,
             name=name,
+            result=0,
+            reason='',
+            status='',
             password=generate_password_hash(password, method="sha256"),
         )
 
