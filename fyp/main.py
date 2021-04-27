@@ -18,7 +18,7 @@ from pydrive.drive import GoogleDrive
 
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = "/home/wilson/fyp/fyp-flask/fyp/data/files"
+app.config["UPLOAD_FOLDER"] = "/home/wilson/fyp/fyp-flask/fyp/static/files/"
 
 main = Blueprint("main", __name__)
 
@@ -119,9 +119,15 @@ def newapplication_post():
 def report():
     email = current_user.email
     all_user = Car.query.filter_by(email=email).all()
+    if len(all_user) < 1:
+        return render_template(
+            "Report.html",
+            name=current_user.name,
+            status="running",
+        )
     user = all_user[len(all_user) - 1]
-    r = ["Invalid File Format"]
-    reason = r[0]
+    r = ["Invalid File Format", "it's beyond the coverage of the insurance plan"]
+    reason = r[1]
     amount = 0
     status = user.status
     amount = round(user.result, 2)
@@ -141,6 +147,8 @@ def report():
 def trackprogress():
     email = current_user.email
     all_user = Car.query.filter_by(email=email).all()
+    if len(all_user) < 1:
+        return render_template("TrackProgress.html", status="")
     user = all_user[len(all_user) - 1]
     status = user.status
     aid = user.aid
