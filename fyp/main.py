@@ -286,6 +286,8 @@ def admin_profile():
 @login_required
 def detail(aid):
     user = Car.query.filter_by(aid=aid).first()
+    if user is None:
+        return render_template("detail.html")
     admin = 0
     if current_user.email == "admin@email.com":
         admin = 1
