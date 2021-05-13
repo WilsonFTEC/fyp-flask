@@ -1,24 +1,21 @@
 from flask import Blueprint, app, render_template, request, url_for, redirect, flash
 from flask_login import login_required, current_user
-from jinja2.utils import urlize
 from . import db
 from fyp.decision import Prediction
 from .models import User, Car
-from datetime import datetime, timedelta
+from datetime import datetime
 import json
-import numpy as np
 import requests
 
 from flask import Flask, render_template, request
-from werkzeug.utils import secure_filename
 import os
 
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
-
+abspath = os.path.abspath ( '..')
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = "/home/wilson/fyp/fyp-flask/fyp/static/files/"
+app.config["UPLOAD_FOLDER"] = abspath + "/fyp-flask/fyp/static/files"
 
 main = Blueprint("main", __name__)
 
@@ -45,7 +42,7 @@ def newapplication():
     for u in user:
         if "running" in u.status:
             return render_template("loading.html", applicationNumber=u.aid)
-    return render_template("NewApplication.html")
+    return render_template("newapplication.html")
 
 
 @main.route("/newapplication", methods=["POST"])
@@ -55,6 +52,7 @@ def newapplication_post():
     aid = "C0000" + str(len(all_user) + 1)
     email = current_user.email
 
+    # initialize the application
     if request.method == "POST":
         time = datetime.today().date()
         new_application = Car(
@@ -76,6 +74,7 @@ def newapplication_post():
         )
         profile = User.query.filter_by(email=email).first()
         profile.result = 0
+        profile.reason = ''
         db.session.add(new_application)
         db.session.commit()
         # save file locally
@@ -103,7 +102,7 @@ def newapplication_post():
             )
             # Read file and set it as the content of this instance.
             gfile.SetContentFile(
-                "/home/wilson/fyp/fyp-flask/fyp/static/files/image.png"
+                abspath + "/fyp-flask/fyp/static/files/image.png"
             )
             gfile["title"] = f"{timestamp}+{email}"
             gfile.Upload(param={"supportsTeamDrives": True})  # Upload the file.
@@ -121,19 +120,23 @@ def report():
     all_user = Car.query.filter_by(email=email).all()
     if len(all_user) < 1:
         return render_template(
-            "Report.html",
+            "report.html",
             name=current_user.name,
             status="running",
         )
     user = all_user[len(all_user) - 1]
+    profile = User.query.filter_by(email=email).first()
+    ri = 1
+    if profile.reason == '0':
+        ri = 0
     r = ["Invalid File Format", "it's beyond the coverage of the insurance plan"]
-    reason = r[1]
+    reason = r[ri]
     amount = 0
     status = user.status
     amount = round(user.result, 2)
     applicationNumber = user.aid
     return render_template(
-        "Report.html",
+        "report.html",
         name=current_user.name,
         reason=reason,
         status=status,
@@ -148,7 +151,7 @@ def trackprogress():
     email = current_user.email
     all_user = Car.query.filter_by(email=email).all()
     if len(all_user) < 1:
-        return render_template("TrackProgress.html", status="")
+        return render_template("trackprogress.html", status="")
     user = all_user[len(all_user) - 1]
     status = user.status
     aid = user.aid
@@ -156,7 +159,7 @@ def trackprogress():
     if status != "":
         value = round(user.result, 2)
     return render_template(
-        "TrackProgress.html",
+        "trackprogress.html",
         name=current_user.name,
         status=status,
         time=time,
@@ -169,7 +172,7 @@ def trackprogress():
 @login_required
 def virtualassit():
 
-    return render_template("VirtualAssistant.html")
+    return render_template("virtualassit.html")
 
 
 @main.route("/predict")
@@ -191,7 +194,7 @@ def predict_post():
         # hardcoding
         # A = int(request.form.get("ca"))
         url_api = "https://api.ocr.space/parse/image"
-        with open("/home/wilson/fyp/fyp-flask/fyp/static/files/image.png", "rb") as f:
+        with open(abspath + "/fyp-flask/fyp/static/files/image.png", "rb") as f:
             result = requests.post(
                 url_api,
                 files={"image.png": f},
@@ -206,6 +209,14 @@ def predict_post():
         output = []
         for t in text_detected:
             output.append(ord(t) - 64)
+
+        if len(output) < 12:
+            user.status = "failed"
+            profile = User.query.filter_by(email=current_user.email).first()
+            profile.reason = 0
+            # update data to the database
+            db.session.commit()
+            return redirect(url_for("main.trackprogress")) 
 
         data = [output[:10]]
         prediction = Prediction(data)
@@ -301,3 +312,8 @@ def detail(aid):
         email=user.email,
         admin=admin,
     )
+
+@main.route("/test")
+@login_required
+def test():
+    return render_template("test.html")
