@@ -17,11 +17,10 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-This project is the Web Application which includes all features described in Group L. Tester can login the admin's account by the following information: 
+This project is the Web Application which includes all features described in Group L. All features have been demostrated during the presentation.
+Tester can login the admin's account by the following information: 
   ```sh
   email: admin@email.com
   password: gWWgWRbAs!BaE4E
@@ -51,7 +50,7 @@ It is recommended to run the app in a vitual environment and install the package
   ```
 
 ### Running the App
-Before running the app, please make sure the current directory is ```sh group-l-webapp-code-submission ```.
+Before running the app, please make sure the current directory is ```group-l-webapp-code-submission ```.
 1. Set up the environment
    ```sh
    export FLASK_APP=fyp
