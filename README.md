@@ -51,7 +51,7 @@ It is recommended to run the app in a vitual environment and install the package
   ```
 
 ### Running the App
-Before running the app, please make sure the current directory is ```group-l-webapp-code-submission ```.
+Before running the app, please make sure the current directory is ```group-l-webapp-code-submission```.
 1. Set up the environment
    ```sh
    export FLASK_APP=fyp
