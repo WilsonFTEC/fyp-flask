@@ -21,6 +21,10 @@
 ## About The Project
 This project is the Web Application which includes all features described in Group L. All features have been demostrated during the presentation.
 
+* Since the chatbot has been expired, it is not able to test the function now.
+
+* Since google drive can only accessed by the account owner, tester is not able to login the account and see the change. However, the function for prediction can still work locally.
+
 Tester can login the admin's account by the following information: 
   ```sh
   email: admin@email.com
