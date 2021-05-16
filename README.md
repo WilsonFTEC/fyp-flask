@@ -25,6 +25,8 @@ This project is the Web Application which includes all features described in Gro
 
 * Since google drive can only accessed by the account owner, tester is not able to login the account and see the change. However, the function for prediction can still work locally.
 
+* Pictures for testing are placed in ```group-l-webapp-code-submission/fyp-flask/fyp/data```
+
 Tester can login the admin's account by the following information: 
   ```sh
   email: admin@email.com
