@@ -45,7 +45,7 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-It is recommended to run the app in a vitual environment and install the packages in it:
+It is recommended to run the app in ubuntu with a python vitual environment and install the packages in it:
   ```sh
   python3 -m venv venv
   ```
@@ -73,5 +73,9 @@ Before running the app, please make sure the current directory is ```group-l-web
    ```sh
    flask run
    ```
+
+4. Click on http://127.0.0.1:5000
+
+5. Press F12 enter developer mode of the browser and set the resolution as iphone X
 
 4. Terminate the server by CTRL + C
